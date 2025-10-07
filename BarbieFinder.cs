@@ -1,12 +1,13 @@
 using AngleSharp;
 using AngleSharp.Dom;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BarbieDataScraper;
 public class BarbieFinder
 {
     private readonly HttpClient _client;
     private readonly IBrowsingContext _context;
-    private record BarbieHtmlChunks(IElement? NameElement, IElement? TableBodyElement);
+    private  record BarbieHtmlChunks(IElement? NameElement, IElement? TableBodyElement);
 
     public BarbieFinder()
     {
@@ -33,13 +34,13 @@ public class BarbieFinder
     private async Task<BarbieDoll?>ParseBarbieFromHtml(string barbieSKU)
     {
         var barbieHtmlChunks = await GetBarbieDollInformation(barbieSKU);
-        
-        if (barbieHtmlChunks.NameElement.OuterHtml == null || barbieHtmlChunks.TableBodyElement.OuterHtml == null)
-        {
-            return new BarbieDoll();
-        }
-        
+
         BarbieDoll? barbieDoll = new BarbieDoll();
+        if (barbieHtmlChunks == null)
+        {
+            barbieDoll.Sku = barbieSKU;
+            return barbieDoll;
+        }
         
         barbieDoll.Sku = barbieSKU;
         barbieDoll.Name = barbieHtmlChunks.NameElement.TextContent;

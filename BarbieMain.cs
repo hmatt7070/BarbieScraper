@@ -38,15 +38,15 @@ public class BarbieMain
          ProgressBarOnBottom = true
         };
 
-        using (var pbar = new ProgressBar(searchTerms.Count, "Searching for dolls...", options))
+        //using (var pbar = new ProgressBar(searchTerms.Count, "Searching for dolls...", options))
         {
          foreach (var searchTerm in searchTerms)
          {
              var barbieDoll = await barbieFinder.FindBarbieDoll(searchTerm);
              barbieDolls.Add(barbieDoll);
-             pbar.Tick($"Processed barbie {searchTerm}.");
+             //pbar.Tick($"Processed barbie {searchTerm}.");
              //small delay to help server load
-             await Task.Delay(4500);
+             await Task.Delay(4000);
          }
         }
 
