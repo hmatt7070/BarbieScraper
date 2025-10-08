@@ -7,7 +7,7 @@ public class BarbieFinder
 {
     private readonly HttpClient _client;
     private readonly IBrowsingContext _context;
-    private  record BarbieHtmlChunks(IElement? NameElement, IElement? TableBodyElement);
+    private  record BarbieHtmlChunks(IElement? NameElement, IElement? TableBodyElement, IElement? DescriptionElement);
 
     public BarbieFinder()
     {
@@ -23,6 +23,7 @@ public class BarbieFinder
     /// <returns>The found doll</returns>
     public async Task<BarbieDoll?> FindBarbieDoll(string barbieSKU)
     {
+        barbieSKU = barbieSKU.ToUpper();
         return await ParseBarbieFromHtml(barbieSKU);
     }
 
@@ -44,6 +45,8 @@ public class BarbieFinder
         
         barbieDoll.Sku = barbieSKU;
         barbieDoll.Name = barbieHtmlChunks.NameElement.TextContent;
+
+        if (barbieHtmlChunks.DescriptionElement != null) { barbieDoll.Description = barbieHtmlChunks.DescriptionElement.TextContent; }
 
         //prunes off extra information from the table that isn't doll information
         var dollInformationElements = barbieHtmlChunks.TableBodyElement.QuerySelectorAll
@@ -91,8 +94,10 @@ public class BarbieFinder
                 //finds first table tag (containing the doll information)
                 
                 var productTableInformation =  document.QuerySelector("tbody:nth-of-type(1)");
+
+                var description = document.QuerySelector(".description p:nth-of-type(2)");
                 
-                return new BarbieHtmlChunks(dollName, productTableInformation);
+                return new BarbieHtmlChunks(dollName, productTableInformation, description);
             }
             catch (HttpRequestException ex)
             {
