@@ -1,15 +1,14 @@
 using AngleSharp;
 using AngleSharp.Dom;
-using System.Diagnostics.CodeAnalysis;
 
-namespace BarbieDataScraper;
-public class BarbieFinder
+namespace BarbieDataScraper.Services;
+public class BarbieDataScraper
 {
     private readonly HttpClient _client;
     private readonly IBrowsingContext _context;
     private  record BarbieHtmlChunks(IElement? NameElement, IElement? TableBodyElement, IElement? DescriptionElement);
 
-    public BarbieFinder()
+    public BarbieDataScraper()
     {
         _client = new HttpClient();
         _client.BaseAddress = new Uri("https://en.barbiepedia.com/");
