@@ -1,6 +1,7 @@
 ﻿
 using BarbieDataScraper.Services;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace BarbieDataScraper;
 public class BarbieMain
@@ -13,8 +14,9 @@ public class BarbieMain
 
         EbayAPI ebayAPI = new EbayAPI();
         var result = await ebayAPI.GetPriceOfBarbie(barbie, true);
+        JsonNode jObject = JsonNode.Parse(result);
 
-        Console.WriteLine(JsonSerializer.Serialize(result));
+        Console.WriteLine(jObject);
 
     }
 }

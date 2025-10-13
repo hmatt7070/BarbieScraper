@@ -1,15 +1,8 @@
 ﻿
 using AngleSharp.Common;
-using AngleSharp.Html.Construction;
-using System;
-using System.Net;
 using System.Net.Http.Headers;
-using System.Net.Mime;
-using System.Reflection.PortableExecutable;
-using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Xml.Linq;
 
 namespace BarbieDataScraper.Services
 {
@@ -29,7 +22,7 @@ namespace BarbieDataScraper.Services
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("excluded_keywords")]
-        public string? ExcludedKeywords { get; set; }
+        public string ExcludedKeywords { get; set; }
 
         [JsonPropertyName("max_search_results")]
         public string MaxSearchResults { get; set; }
@@ -39,14 +32,14 @@ namespace BarbieDataScraper.Services
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("remove_outliers")]
-        public string? RemoveOutliers { get; set; }
+        public string RemoveOutliers { get; set; }
 
         [JsonPropertyName("site_id")]
         public string SiteId { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("max_pages")]
-        public string? MaxPages { get; set; }
+        public string MaxPages { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("aspects")]
@@ -55,7 +48,7 @@ namespace BarbieDataScraper.Services
     public class EbayAPI
     {
         private static readonly HttpClient client = new HttpClient();
-        public string MaxSearchResults { get; set; } = "50";
+        public string MaxSearchResults { get; set; } = "60";
         public string CategoryId { get; set; } = "262346";
         public string RemoveOutliers { get; set; } = "true";
         public string SiteId { get; set; } = "0";
@@ -63,6 +56,7 @@ namespace BarbieDataScraper.Services
 
         public async Task<string> GetPriceOfBarbie(BarbieDoll barbie, bool useAspects)
         {
+            //configuring data to be inlcuded in the body
             var requestData = new EbayDTO
             {
                 Keywords = $"{barbie.Name} {barbie.ReleaseDate}",
@@ -72,6 +66,7 @@ namespace BarbieDataScraper.Services
                 SiteId = this.SiteId,
                 MaxPages = this.MaxPages
             };
+            //optional narrowing of the search based on the ebay description of the item
             if (useAspects)
             {
                 var aspects = new List<Aspect>();
@@ -88,6 +83,7 @@ namespace BarbieDataScraper.Services
                 }
             }
 
+            //the body of the post request 
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
@@ -107,17 +103,13 @@ namespace BarbieDataScraper.Services
                     }
                 }
             };
-            Console.WriteLine(requestData.ToDictionary());
-            Console.WriteLine(JsonSerializer.Serialize(requestData));
-            Console.WriteLine(request);
 
+            //the result of the post request
             using (var response = await client.SendAsync(request))
             {
                 response.EnsureSuccessStatusCode();
                 var body = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(body);
                 return body;
-
             }
         }
     }
