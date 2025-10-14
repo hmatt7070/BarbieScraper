@@ -1,5 +1,7 @@
 using AngleSharp;
 using AngleSharp.Dom;
+using BarbieDataScraper.Models;
+using System.Text;
 
 namespace BarbieDataScraper.Services;
 public class BarbieDataScraper
@@ -18,32 +20,42 @@ public class BarbieDataScraper
     /// <summary>
     /// The entry point for the user to search for a doll
     /// </summary>
-    /// <param name="barbieSKU"></param>
+    /// <param name="barbieMPN"></param>
     /// <returns>The found doll</returns>
-    public async Task<BarbieDoll?> FindBarbieDoll(string barbieSKU)
+    public async Task<BarbieDoll?> FindBarbieDoll(string barbieMPN)
     {
-        barbieSKU = barbieSKU.ToUpper();
-        return await ParseBarbieFromHtml(barbieSKU);
+        barbieMPN = barbieMPN.ToUpper().Split("-")[0];
+        return await ParseBarbieFromHtml(barbieMPN);
     }
 
     /// <summary>
     /// Parses through the HTML containing the barbie information
     /// </summary>
-    /// <param name="barbieSKU"></param>
+    /// <param name="barbieMPN"></param>
     /// <returns>The barbie doll with the appropriate information</returns>
-    private async Task<BarbieDoll?>ParseBarbieFromHtml(string barbieSKU)
+    private async Task<BarbieDoll?>ParseBarbieFromHtml(string barbieMPN)
     {
-        var barbieHtmlChunks = await GetBarbieDollInformation(barbieSKU);
+        var barbieHtmlChunks = await GetBarbieDollInformation(barbieMPN);
 
         BarbieDoll? barbieDoll = new BarbieDoll();
         if (barbieHtmlChunks == null)
         {
-            barbieDoll.Sku = barbieSKU;
+            barbieDoll.Mpn = barbieMPN;
             return barbieDoll;
         }
         
-        barbieDoll.Sku = barbieSKU;
-        barbieDoll.Name = barbieHtmlChunks.NameElement.TextContent;
+        barbieDoll.Mpn = barbieMPN;
+        var sb = new StringBuilder();
+        Console.WriteLine(barbieHtmlChunks.NameElement.TextContent);
+        foreach (var ch in barbieHtmlChunks.NameElement.TextContent)
+        {
+            //printable Ascii range
+            if (ch >= 32 && ch < 127)
+            {
+                sb.Append(ch);
+            }
+        }
+        barbieDoll.Name = sb.ToString();
 
         if (barbieHtmlChunks.DescriptionElement != null) { barbieDoll.Description = barbieHtmlChunks.DescriptionElement.TextContent; }
 
@@ -62,10 +74,14 @@ public class BarbieDataScraper
                     break;
                 case "Classification": barbieDoll.Classification = dollInformationElement.LastElementChild.FirstElementChild.TextContent;
                     break;
+                case "Category": barbieDoll.Category = dollInformationElement.LastElementChild.FirstElementChild.TextContent;
+                    break;
                 case "Release Date": barbieDoll.ReleaseDate = dollInformationElement.LastElementChild.FirstElementChild.TextContent;
                     break;
             }
         }
+
+        Console.WriteLine("Built Barbie");
         return barbieDoll;
     }
     
@@ -73,11 +89,11 @@ public class BarbieDataScraper
     /// Gets the HTML from the correct link. Then, it disects the html into two parts; the header that contains the doll
     /// name, and the table element that contains the rest of the doll information
     /// </summary>
-    /// <param name="barbieSKU"></param>
+    /// <param name="barbieMPN"></param>
     /// <returns>A record of the Barbie Html Chunks</returns>
-    private async Task<BarbieHtmlChunks?> GetBarbieDollInformation(string barbieSKU)
+    private async Task<BarbieHtmlChunks?> GetBarbieDollInformation(string barbieMPN)
     {
-        string? productRelativeLink =  await GetCatalogPage(barbieSKU);
+        string? productRelativeLink =  await GetCatalogPage(barbieMPN);
         if (productRelativeLink != null)
         {
             try
@@ -90,12 +106,14 @@ public class BarbieDataScraper
 
                 //finds first h1 element in .product-page class (which is the doll name)
                 var dollName = document.QuerySelector(".product-page h1:nth-of-type(1)");
+
                 //finds first table tag (containing the doll information)
-                
                 var productTableInformation =  document.QuerySelector("tbody:nth-of-type(1)");
 
                 var description = document.QuerySelector(".description p:nth-of-type(2)");
-                
+
+                Console.WriteLine("Retrieved Doll Information HTML");
+
                 return new BarbieHtmlChunks(dollName, productTableInformation, description);
             }
             catch (HttpRequestException ex)
@@ -110,7 +128,7 @@ public class BarbieDataScraper
     }
     
     /// <summary>
-    /// Searches for the Barbie Doll based on the barbieSKU. It then selects the link on the page containing the sku number. 
+    /// Searches for the Barbie Doll based on the barbieMPN. It then selects the link on the page containing the sku number. 
     /// </summary>
     /// <param name="barbieSKU"></param>
     /// <returns>Task<string></returns>
@@ -123,6 +141,8 @@ public class BarbieDataScraper
                 { "sBuscar", $"{barbieSKU}" }
             }
         );
+
+        Console.WriteLine("Searched Page"); //logging purposes 
 
         //Sends a post request containing the search term, and then returns the link on the page containing the search term
         try
@@ -138,8 +158,11 @@ public class BarbieDataScraper
             //finds the correct link based on if the link contains the sku
             var productAnchorTag = searchResultsDocument.QuerySelector($".product-item a[href*='{barbieSKU}']");
 
+            Console.WriteLine("Retrieved URL");//logging purposes 
+
             //assigns either null for no result, or the link for the item 
             return productAnchorTag?.GetAttribute("href");
+
         }
         catch (HttpRequestException exception)
         {

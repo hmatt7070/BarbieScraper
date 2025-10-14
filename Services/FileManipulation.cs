@@ -1,4 +1,5 @@
-﻿using CsvHelper;
+﻿using BarbieDataScraper.Models;
+using CsvHelper;
 using CsvHelper.Configuration;
 using ShellProgressBar;
 using System.Globalization;
@@ -9,7 +10,9 @@ namespace BarbieDataScraper.Services
     {
         public FileManipulation() { }
 
-        public async Task ParseBarbiesFromSkuFile(string readPath, string writePath, bool displayProgressBar)
+
+
+        public async Task ParseBarbiesFromSkuCsv(string readPath, string writePath, bool displayProgressBar, int delay)
         {
             var searchTerms = new List<string>();
             BarbieDataScraper barbieDataScraper = new BarbieDataScraper();
@@ -32,15 +35,16 @@ namespace BarbieDataScraper.Services
 
             //implement a progress bar and search for barbie dolls
             var barbieDolls = new List<BarbieDoll>();
-            async Task writeFromSearchTerms(List<string> searchTerms, Action<string> reportProgress)
+            async Task writeFromSearchTerms(List<string> searchTerms, Action<string> reportProgress, int delay)
             {
                 foreach (var searchTerm in searchTerms)
                 {
                     var barbieDoll = await barbieDataScraper.FindBarbieDoll(searchTerm);
                     barbieDolls.Add(barbieDoll);
                     reportProgress($"Processed barbie {searchTerm}");
+                    if (delay == 0) return;
                     //small delay to help server load
-                    await Task.Delay(2500);
+                    await Task.Delay(delay);
                 }
             }
 
@@ -54,10 +58,10 @@ namespace BarbieDataScraper.Services
 
                 using (var pbar = new ProgressBar(searchTerms.Count, "Searching for dolls...", options))
                 {
-                    await writeFromSearchTerms(searchTerms, pbar.Tick);
+                    await writeFromSearchTerms(searchTerms, pbar.Tick, delay);
                 }
             } else { 
-                await writeFromSearchTerms(searchTerms, _ => { }); 
+                await writeFromSearchTerms(searchTerms, _ => { }, delay); 
             }
         }
     }

@@ -1,50 +1,10 @@
-﻿
-using AngleSharp.Common;
+﻿using BarbieDataScraper.Models;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace BarbieDataScraper.Services
 {
-    internal class Aspect
-    {
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
-
-        [JsonPropertyName("value")]
-        public string Value { get; set; }
-    }
-
-    internal class EbayDTO
-    {
-        [JsonPropertyName("keywords")]
-        public string Keywords { get; set; }
-
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        [JsonPropertyName("excluded_keywords")]
-        public string ExcludedKeywords { get; set; }
-
-        [JsonPropertyName("max_search_results")]
-        public string MaxSearchResults { get; set; }
-
-        [JsonPropertyName("category_id")]
-        public string CategoryId { get; set; }
-
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        [JsonPropertyName("remove_outliers")]
-        public string RemoveOutliers { get; set; }
-
-        [JsonPropertyName("site_id")]
-        public string SiteId { get; set; }
-
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        [JsonPropertyName("max_pages")]
-        public string MaxPages { get; set; }
-
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        [JsonPropertyName("aspects")]
-        public List<Aspect>? Aspects { get; set; }
-    }
     public class EbayAPI
     {
         private static readonly HttpClient client = new HttpClient();
@@ -56,6 +16,7 @@ namespace BarbieDataScraper.Services
 
         public async Task<string> GetPriceOfBarbie(BarbieDoll barbie, bool useAspects)
         {
+            Console.WriteLine("Searching Prices...");//logging
             //configuring data to be inlcuded in the body
             var requestData = new EbayDTO
             {
@@ -70,8 +31,8 @@ namespace BarbieDataScraper.Services
             if (useAspects)
             {
                 var aspects = new List<Aspect>();
-                if (!string.IsNullOrEmpty(barbie.Sku)) {
-                    new Aspect { Name = "MPN", Value = barbie.Sku };
+                if (!string.IsNullOrEmpty(barbie.Mpn)) {
+                    new Aspect { Name = "Mpn", Value = barbie.Mpn };
                 }
                 if (!string.IsNullOrEmpty(barbie.ReleaseDate))
                 {
@@ -109,6 +70,7 @@ namespace BarbieDataScraper.Services
             {
                 response.EnsureSuccessStatusCode();
                 var body = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Searching Complete");//logging
                 return body;
             }
         }
