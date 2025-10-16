@@ -46,7 +46,6 @@ public class BarbieDataScraper
         
         barbieDoll.Mpn = barbieMPN;
         var sb = new StringBuilder();
-        Console.WriteLine(barbieHtmlChunks.NameElement.TextContent);
         foreach (var ch in barbieHtmlChunks.NameElement.TextContent)
         {
             //printable Ascii range
@@ -81,7 +80,6 @@ public class BarbieDataScraper
             }
         }
 
-        Console.WriteLine("Built Barbie");
         return barbieDoll;
     }
     
@@ -112,8 +110,6 @@ public class BarbieDataScraper
 
                 var description = document.QuerySelector(".description p:nth-of-type(2)");
 
-                Console.WriteLine("Retrieved Doll Information HTML");
-
                 return new BarbieHtmlChunks(dollName, productTableInformation, description);
             }
             catch (HttpRequestException ex)
@@ -142,8 +138,6 @@ public class BarbieDataScraper
             }
         );
 
-        Console.WriteLine("Searched Page"); //logging purposes 
-
         //Sends a post request containing the search term, and then returns the link on the page containing the search term
         try
         {
@@ -157,8 +151,6 @@ public class BarbieDataScraper
 
             //finds the correct link based on if the link contains the sku
             var productAnchorTag = searchResultsDocument.QuerySelector($".product-item a[href*='{barbieSKU}']");
-
-            Console.WriteLine("Retrieved URL");//logging purposes 
 
             //assigns either null for no result, or the link for the item 
             return productAnchorTag?.GetAttribute("href");

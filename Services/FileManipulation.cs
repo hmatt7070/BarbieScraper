@@ -10,8 +10,6 @@ namespace BarbieDataScraper.Services
     {
         public FileManipulation() { }
 
-
-
         public async Task ParseBarbiesFromSkuCsv(string readPath, string writePath, bool displayProgressBar, int delay)
         {
             var searchTerms = new List<string>();
@@ -22,7 +20,7 @@ namespace BarbieDataScraper.Services
                 HasHeaderRecord = false
             };
 
-            //read SKUs from csv file 
+            //read MPN from csv file 
             using (var reader = new StreamReader(readPath))
             using (var csv = new CsvReader(reader, config))
             {
@@ -62,6 +60,12 @@ namespace BarbieDataScraper.Services
                 }
             } else { 
                 await writeFromSearchTerms(searchTerms, _ => { }, delay); 
+            }
+
+            using (var writer = new StreamWriter(writePath))
+            using (var csv = new CsvWriter(writer, new CsvConfiguration(CultureInfo.InvariantCulture) {HasHeaderRecord = true}))
+            {
+                csv.WriteRecords(barbieDolls);
             }
         }
     }

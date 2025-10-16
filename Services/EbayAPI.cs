@@ -32,7 +32,7 @@ namespace BarbieDataScraper.Services
             {
                 var aspects = new List<Aspect>();
                 if (!string.IsNullOrEmpty(barbie.Mpn)) {
-                    new Aspect { Name = "Mpn", Value = barbie.Mpn };
+                    new Aspect { Name = "MPN", Value = barbie.Mpn };
                 }
                 if (!string.IsNullOrEmpty(barbie.ReleaseDate))
                 {
