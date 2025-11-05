@@ -16,8 +16,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Barbie Dolls.csv">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <None Update="Data\Barbie Dolls.csv">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\ParsedBarbies.csv">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

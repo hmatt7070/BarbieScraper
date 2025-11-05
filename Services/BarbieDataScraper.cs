@@ -150,7 +150,7 @@ public class BarbieDataScraper
             IDocument searchResultsDocument = await _context.OpenAsync(req => req.Content(searchResponseString));
 
             //finds the correct link based on if the link contains the sku
-            var productAnchorTag = searchResultsDocument.QuerySelector($".product-item a[href*='{barbieSKU}']");
+            var productAnchorTag = searchResultsDocument.QuerySelector($".product-item a[href*='-{barbieSKU}.html']");
 
             //assigns either null for no result, or the link for the item 
             return productAnchorTag?.GetAttribute("href");

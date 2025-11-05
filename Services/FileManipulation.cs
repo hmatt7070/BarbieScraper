@@ -6,11 +6,9 @@ using System.Globalization;
 
 namespace BarbieDataScraper.Services
 {
-    internal class FileManipulation
+    public class FileManipulation
     {
-        public FileManipulation() { }
-
-        public async Task ParseBarbiesFromSkuCsv(string readPath, string writePath, bool displayProgressBar, int delay)
+        public static async Task ParseBarbiesFromSkuCsv(string readPath, string writePath, bool displayProgressBar, int delay)
         {
             var searchTerms = new List<string>();
             BarbieDataScraper barbieDataScraper = new BarbieDataScraper();
@@ -40,9 +38,8 @@ namespace BarbieDataScraper.Services
                     var barbieDoll = await barbieDataScraper.FindBarbieDoll(searchTerm);
                     barbieDolls.Add(barbieDoll);
                     reportProgress($"Processed barbie {searchTerm}");
-                    if (delay == 0) return;
-                    //small delay to help server load
-                    await Task.Delay(delay);
+                    if (delay > 0) await Task.Delay(delay);//small delay to help server load
+                    
                 }
             }
 
@@ -67,6 +64,31 @@ namespace BarbieDataScraper.Services
             {
                 csv.WriteRecords(barbieDolls);
             }
+        }
+
+        public static async Task<List<BarbieDoll>> ImportBarbiesFromCSV(string fileName)
+        {
+            var barbieList = new List<BarbieDoll>();
+
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                HeaderValidated = args => Console.WriteLine(args),
+                MissingFieldFound = args => Console.WriteLine(args),
+            };
+
+            //read MPN from csv file 
+            using (var reader = new StreamReader(fileName))
+            using (var csv = new CsvReader(reader, config))
+            {
+                while (csv.Read())
+                {
+                    BarbieDoll doll = csv.GetRecord<BarbieDoll>();
+                    barbieList.Add(doll);
+                }
+            }
+
+            return barbieList;
         }
     }
 }
