@@ -90,5 +90,20 @@ namespace BarbieDataScraper.Services
 
             return barbieList;
         }
+
+        public static async Task WriteFromList(List<BarbieDoll> barbieDolls, string writePath)
+        {
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+                HeaderValidated = args => Console.WriteLine(args),
+                MissingFieldFound = args => Console.WriteLine(args),
+            };
+            using (var writer = new StreamWriter(writePath))
+            using (var csv = new CsvWriter(writer, config))
+            {
+                csv.WriteRecords(barbieDolls);
+            }
+        }
     }
 }

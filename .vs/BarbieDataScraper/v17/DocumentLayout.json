@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|c:\\users\\jamie\\source\\repos\\barbiescraper\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|c:\\users\\jamie\\source\\repos\\barbiescraper\\barbiedatascraper.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}",
+      "RelativeMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|solutionrelative:barbiedatascraper.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|c:\\users\\jamie\\source\\repos\\barbiescraper\\barbiemain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|solutionrelative:barbiemain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|c:\\users\\jamie\\source\\repos\\barbiescraper\\data\\parsedbarbies.csv||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|solutionrelative:data\\parsedbarbies.csv||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|c:\\users\\jamie\\source\\repos\\barbiescraper\\services\\filemanipulation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|solutionrelative:services\\filemanipulation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|c:\\users\\jamie\\source\\repos\\barbiescraper\\services\\ebayapi.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -15,16 +31,12 @@
       "RelativeMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|solutionrelative:models\\ebaydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|c:\\users\\jamie\\source\\repos\\barbiescraper\\services\\filemanipulation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|solutionrelative:services\\filemanipulation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|c:\\users\\jamie\\source\\repos\\barbiescraper\\data\\barbie dolls.csv||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|solutionrelative:data\\barbie dolls.csv||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|c:\\users\\jamie\\source\\repos\\barbiescraper\\data\\parsedbarbies.csv||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|solutionrelative:data\\parsedbarbies.csv||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|c:\\users\\jamie\\source\\repos\\barbiescraper\\barbiedatascraper.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}",
-      "RelativeMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|solutionrelative:barbiedatascraper.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}"
+      "AbsoluteMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|c:\\users\\jamie\\source\\repos\\barbiescraper\\services\\barbiedatascraper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{984AF1E3-CEEB-4A69-B247-61FF9E30F048}|BarbieDataScraper.csproj|solutionrelative:services\\barbiedatascraper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,7 +46,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,72 +54,111 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAACMAAAAAAAAAAAAwwDAAAAAQAAAAAAAAAA==",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF8SURBVDhPjVNLTgJBEG1lwpoFB3GNK9fieA48hD8iwT/ihwgSDAIHgAGXXsEV18CNzL/LquqZdsYM6kteXqcy3fWqpmpNRBgOhyABBEgpAFVKPIMUcYzUyOU\u002BXM/b2qtU3vkSfRjjZTCAMAw1A2LwzdFoBPP5HNqdzuL27n4juibWI\u002BUshBA1DIkhEx9iEorFotgslQqGYbxxAGFEqt1MxmPWJLbLZdZ\u002Bv89q5PMFPiTR6z2zdaxR0fXA0XTBcVywkb4fwHXjRteecIDNQ7UmExVYAdPcxYaqclN46na5WenMKjtlVnTYwcXlVYaDqImW9beD5N/TeGy32QHXm6hZ03ZgiSQHp2fnWQ4oBmJqWSqwAqZpZjt4aLXAD4J0VqyZsmoubfB8H2r1eoaD6NXZ9HcHO\u002BSA3f4AjifXl8rItOETM8ckB9WTWpYD9RdeZ1PWVWAHWXPQaDb59f/w8LiqHeh1pvGkCaP6qB8yXusoxmuNZ7XmII4O9vGuEF86osuDYRkpYQAAAABJRU5ErkJggg==",
+              "WhenOpened": "2025-11-06T21:30:55.399Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "BarbieDataScraper.cs",
+              "DocumentMoniker": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\Services\\BarbieDataScraper.cs",
+              "RelativeDocumentMoniker": "Services\\BarbieDataScraper.cs",
+              "ToolTip": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\Services\\BarbieDataScraper.cs",
+              "RelativeToolTip": "Services\\BarbieDataScraper.cs",
+              "ViewState": "AgIAAIgAAAAAAAAAAAAAAKcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-05T23:48:48.498Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Barbie Dolls.csv",
+              "DocumentMoniker": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\Data\\Barbie Dolls.csv",
+              "RelativeDocumentMoniker": "Data\\Barbie Dolls.csv",
+              "ToolTip": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\Data\\Barbie Dolls.csv",
+              "RelativeToolTip": "Data\\Barbie Dolls.csv",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002120|",
+              "WhenOpened": "2025-11-05T23:45:47.196Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "EbayDTO.cs",
               "DocumentMoniker": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\Models\\EbayDTO.cs",
               "RelativeDocumentMoniker": "Models\\EbayDTO.cs",
               "ToolTip": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\Models\\EbayDTO.cs",
               "RelativeToolTip": "Models\\EbayDTO.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAcwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAA1wAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-26T21:58:46.123Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "EbayAPI.cs",
               "DocumentMoniker": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\Services\\EbayAPI.cs",
               "RelativeDocumentMoniker": "Services\\EbayAPI.cs",
               "ToolTip": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\Services\\EbayAPI.cs",
               "RelativeToolTip": "Services\\EbayAPI.cs",
-              "ViewState": "AgIAADYAAAAAAAAAAAAmwBIAAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAwwGMAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-26T21:13:20.008Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "FileManipulation.cs",
               "DocumentMoniker": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\Services\\FileManipulation.cs",
               "RelativeDocumentMoniker": "Services\\FileManipulation.cs",
               "ToolTip": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\Services\\FileManipulation.cs",
               "RelativeToolTip": "Services\\FileManipulation.cs",
-              "ViewState": "AgIAADoAAAAAAAAAAAAgwEwAAABEAAAAAAAAAA==",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAlwFAAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-26T21:03:36.988Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "ParsedBarbies.csv",
               "DocumentMoniker": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\Data\\ParsedBarbies.csv",
               "RelativeDocumentMoniker": "Data\\ParsedBarbies.csv",
               "ToolTip": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\Data\\ParsedBarbies.csv",
               "RelativeToolTip": "Data\\ParsedBarbies.csv",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002120|",
               "WhenOpened": "2025-10-26T20:59:06.728Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "BarbieMain.cs",
               "DocumentMoniker": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\BarbieMain.cs",
               "RelativeDocumentMoniker": "BarbieMain.cs",
               "ToolTip": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\BarbieMain.cs",
               "RelativeToolTip": "BarbieMain.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAQwCMAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-07T13:58:37.684Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "BarbieDataScraper",
               "DocumentMoniker": "C:\\Users\\Jamie\\source\\repos\\BarbieScraper\\BarbieDataScraper.csproj",
               "RelativeDocumentMoniker": "BarbieDataScraper.csproj",

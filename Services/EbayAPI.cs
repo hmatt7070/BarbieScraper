@@ -15,7 +15,7 @@ namespace BarbieDataScraper.Services
         public string SiteId { get; set; } = "0";
         public string MaxPages { get; set; } = "1";
 
-        public async Task<JsonNode> GetPriceOfBarbie(BarbieDoll barbie, bool useAspects)
+        public async Task<BarbieDoll> GetPriceOfBarbie(BarbieDoll barbie, bool useAspects)
         {
             //Console.WriteLine("Searching Prices...");//logging
             //configuring data to be inlcuded in the body
@@ -70,35 +70,35 @@ namespace BarbieDataScraper.Services
             using (var response = await client.SendAsync(request))
             {
                 response.EnsureSuccessStatusCode();
-                var body = JsonNode.Parse(await response.Content.ReadAsStringAsync());
+                var body = await response.Content.ReadAsStringAsync();
                 //Console.WriteLine("Searching Complete");//logging
-                return body;
-            }
-
-            /*if (!String.IsNullOrEmpty(barbie.Name))
-            {
-                var jResult = JsonNode.Parse(await ebayAPI.GetPriceOfBarbie(barbie, isUsingAspects));
-                if (jResult != null)
+                if (!String.IsNullOrEmpty(barbie.Name))
                 {
-                    // 1. ?[1] safely accesses the second element
-                    // 2. ?.GetValueKind() gets its type (e.g., Object, Null)
-                    // 3. ?? JsonValueKind.Null handles cases where "warning" or [1] is missing
-                    // 4. != JsonValueKind.Null checks if it's anything *other* than null
-                    bool hasErrorWarning = (jResult["warning"]?[1]?.GetValueKind() ?? JsonValueKind.Null) != JsonValueKind.Null;
+                    var jResult = JsonNode.Parse(body);
+                    if (jResult != null)
+                    {
+                        // 1. ?[1] safely accesses the second element
+                        // 2. ?.GetValueKind() gets its type (e.g., Object, Null)
+                        // 3. ?? JsonValueKind.Null handles cases where "warning" or [1] is missing
+                        // 4. != JsonValueKind.Null checks if it's anything *other* than null
+                        bool hasErrorWarning = (jResult["warning"]?[1]?.GetValueKind() ?? JsonValueKind.Null) != JsonValueKind.Null;
 
-                    if (hasErrorWarning)
-                    {
-                        // It was ["warning", {...}], so an error occurred.
-                        barbie.MedianPrice = "Error";
-                        barbie.AveragePrice = "Error";
-                    }
-                    else if (jResult["success"].GetValue<bool>() == true)
-                    {
-                        barbie.MedianPrice = jResult["median_price"].GetValue<float>().ToString();
-                        barbie.AveragePrice = jResult["average_price"].GetValue<float>().ToString();
+                        if (hasErrorWarning)
+                        {
+                            // It was ["warning", {...}], so an error occurred.
+                            barbie.MedianPrice = "Error";
+                            barbie.AveragePrice = "Error";
+                        }
+                        else if (jResult["success"].GetValue<bool>() == true)
+                        {
+                            barbie.MedianPrice = jResult["median_price"].GetValue<float>().ToString();
+                            barbie.AveragePrice = jResult["average_price"].GetValue<float>().ToString();
+                        }
                     }
                 }
-            }*/
+            }
+            return barbie;
+
         }
     }
 }

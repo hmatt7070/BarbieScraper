@@ -1,6 +1,7 @@
 using AngleSharp;
 using AngleSharp.Dom;
 using BarbieDataScraper.Models;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace BarbieDataScraper.Services;
@@ -149,12 +150,15 @@ public class BarbieDataScraper
             await using var searchResponseString = await productSearchPostResponse.Content.ReadAsStreamAsync();
             IDocument searchResultsDocument = await _context.OpenAsync(req => req.Content(searchResponseString));
 
-            //finds the correct link based on if the link contains the sku
-            var productAnchorTag = searchResultsDocument.QuerySelector($".product-item a[href*='-{barbieSKU}.html']");
-
+            //finds all links on the page based on if the link contains the sku
+            var potentialLinks = searchResultsDocument.QuerySelectorAll($".product-item h3 a[href*='-{barbieSKU}.html']");
+            
+            var finalLink = potentialLinks.FirstOrDefault(link => link.TextContent.ToLower().Contains("doll"));
+            
             //assigns either null for no result, or the link for the item 
-            return productAnchorTag?.GetAttribute("href");
+            //return productAnchorTag?.GetAttribute("href");
 
+            return finalLink?.GetAttribute("href");
         }
         catch (HttpRequestException exception)
         {
