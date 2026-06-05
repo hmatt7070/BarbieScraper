@@ -1,14 +1,16 @@
-namespace BarbieDataScraper;
+namespace BarbieDataScraper.Models;
 
 public class BarbieDoll
 {
     public string?  Name {get; set;}
     public string? ReleaseDate {get; set;}
-    public string? Sku { get; set;}
+    public string? Mpn { get; set;}
     public string?  Edition  {get; set;}
     public string? Collection {get; set;}
     public string? Classification {get; set;}
     public string? Category {get; set;}
+    public string? AveragePrice {get; set;}
+    public string? MedianPrice {get; set;}
     public string? Description {get; set;}
     
     public BarbieDoll()

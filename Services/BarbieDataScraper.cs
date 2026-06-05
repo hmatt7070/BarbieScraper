@@ -1,15 +1,17 @@
 using AngleSharp;
 using AngleSharp.Dom;
-using System.Diagnostics.CodeAnalysis;
+using BarbieDataScraper.Models;
+using System.Runtime.InteropServices;
+using System.Text;
 
-namespace BarbieDataScraper;
-public class BarbieFinder
+namespace BarbieDataScraper.Services;
+public class BarbieDataScraper
 {
     private readonly HttpClient _client;
     private readonly IBrowsingContext _context;
     private  record BarbieHtmlChunks(IElement? NameElement, IElement? TableBodyElement, IElement? DescriptionElement);
 
-    public BarbieFinder()
+    public BarbieDataScraper()
     {
         _client = new HttpClient();
         _client.BaseAddress = new Uri("https://en.barbiepedia.com/");
@@ -19,32 +21,41 @@ public class BarbieFinder
     /// <summary>
     /// The entry point for the user to search for a doll
     /// </summary>
-    /// <param name="barbieSKU"></param>
+    /// <param name="barbieMPN"></param>
     /// <returns>The found doll</returns>
-    public async Task<BarbieDoll?> FindBarbieDoll(string barbieSKU)
+    public async Task<BarbieDoll?> FindBarbieDoll(string barbieMPN)
     {
-        barbieSKU = barbieSKU.ToUpper();
-        return await ParseBarbieFromHtml(barbieSKU);
+        barbieMPN = barbieMPN.ToUpper().Split("-")[0];
+        return await ParseBarbieFromHtml(barbieMPN);
     }
 
     /// <summary>
     /// Parses through the HTML containing the barbie information
     /// </summary>
-    /// <param name="barbieSKU"></param>
+    /// <param name="barbieMPN"></param>
     /// <returns>The barbie doll with the appropriate information</returns>
-    private async Task<BarbieDoll?>ParseBarbieFromHtml(string barbieSKU)
+    private async Task<BarbieDoll?>ParseBarbieFromHtml(string barbieMPN)
     {
-        var barbieHtmlChunks = await GetBarbieDollInformation(barbieSKU);
+        var barbieHtmlChunks = await GetBarbieDollInformation(barbieMPN);
 
         BarbieDoll? barbieDoll = new BarbieDoll();
         if (barbieHtmlChunks == null)
         {
-            barbieDoll.Sku = barbieSKU;
+            barbieDoll.Mpn = barbieMPN;
             return barbieDoll;
         }
         
-        barbieDoll.Sku = barbieSKU;
-        barbieDoll.Name = barbieHtmlChunks.NameElement.TextContent;
+        barbieDoll.Mpn = barbieMPN;
+        var sb = new StringBuilder();
+        foreach (var ch in barbieHtmlChunks.NameElement.TextContent)
+        {
+            //printable Ascii range
+            if (ch >= 32 && ch < 127)
+            {
+                sb.Append(ch);
+            }
+        }
+        barbieDoll.Name = sb.ToString();
 
         if (barbieHtmlChunks.DescriptionElement != null) { barbieDoll.Description = barbieHtmlChunks.DescriptionElement.TextContent; }
 
@@ -63,10 +74,13 @@ public class BarbieFinder
                     break;
                 case "Classification": barbieDoll.Classification = dollInformationElement.LastElementChild.FirstElementChild.TextContent;
                     break;
+                case "Category": barbieDoll.Category = dollInformationElement.LastElementChild.FirstElementChild.TextContent;
+                    break;
                 case "Release Date": barbieDoll.ReleaseDate = dollInformationElement.LastElementChild.FirstElementChild.TextContent;
                     break;
             }
         }
+
         return barbieDoll;
     }
     
@@ -74,11 +88,11 @@ public class BarbieFinder
     /// Gets the HTML from the correct link. Then, it disects the html into two parts; the header that contains the doll
     /// name, and the table element that contains the rest of the doll information
     /// </summary>
-    /// <param name="barbieSKU"></param>
+    /// <param name="barbieMPN"></param>
     /// <returns>A record of the Barbie Html Chunks</returns>
-    private async Task<BarbieHtmlChunks?> GetBarbieDollInformation(string barbieSKU)
+    private async Task<BarbieHtmlChunks?> GetBarbieDollInformation(string barbieMPN)
     {
-        string? productRelativeLink =  await GetCatalogPage(barbieSKU);
+        string? productRelativeLink =  await GetCatalogPage(barbieMPN);
         if (productRelativeLink != null)
         {
             try
@@ -91,12 +105,12 @@ public class BarbieFinder
 
                 //finds first h1 element in .product-page class (which is the doll name)
                 var dollName = document.QuerySelector(".product-page h1:nth-of-type(1)");
+
                 //finds first table tag (containing the doll information)
-                
                 var productTableInformation =  document.QuerySelector("tbody:nth-of-type(1)");
 
                 var description = document.QuerySelector(".description p:nth-of-type(2)");
-                
+
                 return new BarbieHtmlChunks(dollName, productTableInformation, description);
             }
             catch (HttpRequestException ex)
@@ -111,7 +125,7 @@ public class BarbieFinder
     }
     
     /// <summary>
-    /// Searches for the Barbie Doll based on the barbieSKU. It then selects the link on the page containing the sku number. 
+    /// Searches for the Barbie Doll based on the barbieMPN. It then selects the link on the page containing the sku number. 
     /// </summary>
     /// <param name="barbieSKU"></param>
     /// <returns>Task<string></returns>
@@ -136,11 +150,15 @@ public class BarbieFinder
             await using var searchResponseString = await productSearchPostResponse.Content.ReadAsStreamAsync();
             IDocument searchResultsDocument = await _context.OpenAsync(req => req.Content(searchResponseString));
 
-            //finds the correct link based on if the link contains the sku
-            var productAnchorTag = searchResultsDocument.QuerySelector($".product-item a[href*='{barbieSKU}']");
-
+            //finds all links on the page based on if the link contains the sku
+            var potentialLinks = searchResultsDocument.QuerySelectorAll($".product-item h3 a[href*='-{barbieSKU}.html']");
+            
+            var finalLink = potentialLinks.FirstOrDefault(link => link.TextContent.ToLower().Contains("doll"));
+            
             //assigns either null for no result, or the link for the item 
-            return productAnchorTag?.GetAttribute("href");
+            //return productAnchorTag?.GetAttribute("href");
+
+            return finalLink?.GetAttribute("href");
         }
         catch (HttpRequestException exception)
         {
