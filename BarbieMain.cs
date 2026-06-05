@@ -6,13 +6,17 @@ public class BarbieMain
 {
     static async Task Main(string[] args)
     {
+        await FileManipulation.FindBarbiesUsingMpn("Data/Barbie Dolls.csv",
+            "Data/ParsedBarbies.csv", true,
+            0);
         var dolls = await FileManipulation.ImportBarbiesFromCSV("Data/ParsedBarbies.csv");
-        List<BarbieDoll> newDolls = new();
         EbayAPI api = new EbayAPI();
         foreach (var item in dolls)
         {
-            newDolls.Add(await api.GetPriceOfBarbie(item, true));
+            BarbieDoll barbieDoll = await api.GetPriceOfBarbie(item, true);
+            item.AveragePrice = barbieDoll.AveragePrice;
+            item.MedianPrice = barbieDoll.MedianPrice;
         }
-        await FileManipulation.WriteFromList(newDolls, "NewDolls.csv");
+        await FileManipulation.WriteFromList(dolls, "DollsWithPrice.csv");
     }
 }

@@ -12,9 +12,4 @@ public class BarbieDoll
     public string? AveragePrice {get; set;}
     public string? MedianPrice {get; set;}
     public string? Description {get; set;}
-    
-    public BarbieDoll()
-    {
-        
-    }
 }

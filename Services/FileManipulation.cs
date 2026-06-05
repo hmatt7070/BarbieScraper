@@ -8,7 +8,14 @@ namespace BarbieDataScraper.Services
 {
     public class FileManipulation
     {
-        public static async Task ParseBarbiesFromSkuCsv(string readPath, string writePath, bool displayProgressBar, int delay)
+        /// <summary>
+        /// Searches barbiepedia.com to find information of barbies given a file of MPNs.
+        /// </summary>
+        /// <param name="readPath"></param>
+        /// <param name="writePath"></param>
+        /// <param name="displayProgressBar"></param>
+        /// <param name="delay"></param>
+        public static async Task FindBarbiesUsingMpn(string readPath, string writePath, bool displayProgressBar, int delay)
         {
             var searchTerms = new List<string>();
             BarbieDataScraper barbieDataScraper = new BarbieDataScraper();
@@ -66,6 +73,11 @@ namespace BarbieDataScraper.Services
             }
         }
 
+        /// <summary>
+        /// Reads a CSV file of barbies and converts it to a list of type Barbie.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public static async Task<List<BarbieDoll>> ImportBarbiesFromCSV(string fileName)
         {
             var barbieList = new List<BarbieDoll>();
@@ -91,6 +103,11 @@ namespace BarbieDataScraper.Services
             return barbieList;
         }
 
+        /// <summary>
+        /// Writes a list of Barbie objects to a CSV file.
+        /// </summary>
+        /// <param name="barbieDolls"></param>
+        /// <param name="writePath"></param>
         public static async Task WriteFromList(List<BarbieDoll> barbieDolls, string writePath)
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)

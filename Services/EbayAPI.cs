@@ -2,23 +2,35 @@
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 
 namespace BarbieDataScraper.Services
 {
     public class EbayAPI
     {
         private static readonly HttpClient client = new HttpClient();
+        private readonly string APIKey = "";
         public string MaxSearchResults { get; set; } = "60";
         public string CategoryId { get; set; } = "262346";
         public string RemoveOutliers { get; set; } = "true";
         public string SiteId { get; set; } = "0";
         public string MaxPages { get; set; } = "1";
 
+        /// <summary>
+        /// Searches ebay sold listings and determinds the average price and the median price the barbie was sold for 
+        /// </summary>
+        /// <param name="barbie"></param>
+        /// <param name="useAspects"></param>
+        /// <returns></returns>
         public async Task<BarbieDoll> GetPriceOfBarbie(BarbieDoll barbie, bool useAspects)
         {
+            if (string.IsNullOrEmpty(APIKey))
+            {
+                Console.WriteLine("API Key not set.");
+                return barbie;
+            }
+
             //Console.WriteLine("Searching Prices...");//logging
-            //configuring data to be inlcuded in the body
+            //configuring data to be included in the body
             var requestData = new EbayDTO
             {
                 Keywords = $"{barbie.Name} {barbie.ReleaseDate}",
@@ -33,11 +45,11 @@ namespace BarbieDataScraper.Services
             {
                 var aspects = new List<Aspect>();
                 if (!string.IsNullOrEmpty(barbie.Mpn)) {
-                    new Aspect { Name = "MPN", Value = barbie.Mpn };
+                    aspects.Add(new Aspect { Name = "MPN", Value = barbie.Mpn});
                 }
                 if (!string.IsNullOrEmpty(barbie.ReleaseDate))
                 {
-                    new Aspect { Name = "Year Manufactured", Value = barbie.ReleaseDate };
+                    aspects.Add(new Aspect { Name = "Year Manufactured", Value = barbie.ReleaseDate });
                 }
                 if (aspects.Count > 0)
                 {
@@ -52,16 +64,14 @@ namespace BarbieDataScraper.Services
                 RequestUri = new Uri("https://ebay-average-selling-price.p.rapidapi.com/findCompletedItems"),
                 Headers =
                 {
-                    { "x-rapidapi-key", "***REMOVED***" },
+                    { "x-rapidapi-key", APIKey },
                     { "x-rapidapi-host", "ebay-average-selling-price.p.rapidapi.com" },
                 },
                 Content = new StringContent(JsonSerializer.Serialize(requestData))
                 {
                     Headers =
-
                     {
                         ContentType = new MediaTypeHeaderValue("application/json")
-
                     }
                 }
             };
@@ -98,7 +108,6 @@ namespace BarbieDataScraper.Services
                 }
             }
             return barbie;
-
         }
     }
 }
