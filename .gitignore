@@ -53,7 +53,12 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
-# Custom
+### Custom ###
+
+# IDE 
 *.vsidx
 *.vs
 *.idea
+
+# ENV
+.env

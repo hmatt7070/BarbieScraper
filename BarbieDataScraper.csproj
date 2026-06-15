@@ -10,6 +10,7 @@
     <ItemGroup>
       <PackageReference Include="AngleSharp" Version="1.3.1-beta.491" />
       <PackageReference Include="CsvHelper" Version="33.1.0" />
+      <PackageReference Include="DotNetEnv" Version="3.2.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0-rc.1.25451.107" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0-rc.1.25451.107" />
       <PackageReference Include="ShellProgressBar" Version="5.2.0" />
@@ -18,6 +19,9 @@
     <ItemGroup>
       <None Update="Data\Barbie Dolls.csv">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update=".env">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 
