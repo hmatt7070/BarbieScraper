@@ -1,20 +1,18 @@
 using AngleSharp;
 using AngleSharp.Dom;
 using BarbieDataScraper.Models;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace BarbieDataScraper.Services;
 public class BarbieDataScraper
 {
-    private readonly HttpClient _client;
+    private static readonly HttpClient Client = new HttpClient();
     private readonly IBrowsingContext _context;
     private  record BarbieHtmlChunks(IElement? NameElement, IElement? TableBodyElement, IElement? DescriptionElement);
 
     public BarbieDataScraper()
     {
-        _client = new HttpClient();
-        _client.BaseAddress = new Uri("https://en.barbiepedia.com/");
+        Client.BaseAddress = new Uri("https://en.barbiepedia.com/");
         _context = BrowsingContext.New(Configuration.Default);
     }
 
@@ -85,11 +83,11 @@ public class BarbieDataScraper
     }
     
     /// <summary>
-    /// Gets the HTML from the correct link. Then, it disects the html into two parts; the header that contains the doll
+    /// Gets the HTML from the correct link. Then, it dissects the HTML into two parts; the header that contains the doll
     /// name, and the table element that contains the rest of the doll information
     /// </summary>
     /// <param name="barbieMPN"></param>
-    /// <returns>A record of the Barbie Html Chunks</returns>
+    /// <returns>A record of the Barbie HTML Chunks</returns>
     private async Task<BarbieHtmlChunks?> GetBarbieDollInformation(string barbieMPN)
     {
         string? productRelativeLink =  await GetCatalogPage(barbieMPN);
@@ -97,7 +95,7 @@ public class BarbieDataScraper
         {
             try
             {
-                HttpResponseMessage productPageGetResponse = await _client.GetAsync(productRelativeLink);
+                HttpResponseMessage productPageGetResponse = await Client.GetAsync(productRelativeLink);
                 productPageGetResponse.EnsureSuccessStatusCode();
                         
                 await using var productPageContent = await productPageGetResponse.Content.ReadAsStreamAsync();
@@ -143,7 +141,7 @@ public class BarbieDataScraper
         try
         {
             //post request
-            HttpResponseMessage productSearchPostResponse = await _client.PostAsync("barbie/buscar/", payload);
+            HttpResponseMessage productSearchPostResponse = await Client.PostAsync("barbie/buscar/", payload);
             productSearchPostResponse.EnsureSuccessStatusCode();
 
             //gets the catalog page information
@@ -154,6 +152,33 @@ public class BarbieDataScraper
             var potentialLinks = searchResultsDocument.QuerySelectorAll($".product-item h3 a[href*='-{barbieSKU}.html']");
             
             var finalLink = potentialLinks.FirstOrDefault(link => link.TextContent.ToLower().Contains("doll"));
+
+            //one final try to find the doll by going into each potential doll and looking at the webpage to see if it contains the SKU
+            if (finalLink == null)
+            {
+                foreach (var link in potentialLinks)
+                {
+                    try
+                    {
+                        HttpResponseMessage productPageGetResponse = await Client.GetAsync(link.GetAttribute("href"));
+                        productPageGetResponse.EnsureSuccessStatusCode();
+
+                        await using var productPageContent = await productPageGetResponse.Content.ReadAsStreamAsync();
+                        IDocument document = await _context.OpenAsync(req => req.Content(productPageContent));
+
+                        string? potentialSKU = document.QuerySelector(".price span").TextContent.Split(":")[1].Trim();
+
+                        if (potentialSKU == barbieSKU)
+                        {
+                            finalLink = link;
+                            break;
+                        }
+                    }
+                    catch (HttpRequestException)
+                    {
+                    }
+                }
+            }
             
             //assigns either null for no result, or the link for the item 
             //return productAnchorTag?.GetAttribute("href");

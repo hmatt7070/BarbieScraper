@@ -1,5 +1,4 @@
-﻿using BarbieDataScraper.Models;
-using BarbieDataScraper.Services;
+﻿using BarbieDataScraper.Services;
 using DotNetEnv;
 
 namespace BarbieDataScraper;
@@ -14,6 +13,7 @@ public class BarbieMain
             0);
         var dolls = await FileManipulation.ImportBarbiesFromCSV("Data/ParsedBarbies.csv");
         
+        /*
         EbayApi api = new EbayApi();
         foreach (var item in dolls)
         {
@@ -21,7 +21,8 @@ public class BarbieMain
             item.AveragePrice = barbieDoll.AveragePrice;
             item.MedianPrice = barbieDoll.MedianPrice;
         }
+        */
         
-        await FileManipulation.WriteFromList(dolls, "DollsWithPrice.csv");
+        await FileManipulation.WriteFromList(dolls, "FinalizedDolls.csv");
     }
 }

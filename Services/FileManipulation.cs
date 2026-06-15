@@ -6,7 +6,7 @@ using System.Globalization;
 
 namespace BarbieDataScraper.Services
 {
-    public class FileManipulation
+    public static class FileManipulation
     {
         /// <summary>
         /// Searches barbiepedia.com to find information of barbies given a file of MPNs.
