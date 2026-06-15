@@ -5,7 +5,7 @@ using System.Text.Json.Nodes;
 
 namespace BarbieDataScraper.Services
 {
-    public class EbayApi
+    public class EbayAPI
     {
         private static readonly HttpClient client = new HttpClient();
         private readonly string? _apiKey = Environment.GetEnvironmentVariable("API_KEY");

@@ -38,7 +38,7 @@ namespace BarbieDataScraper.Services
 
             //implement a progress bar and search for barbie dolls
             var barbieDolls = new List<BarbieDoll>();
-            async Task writeFromSearchTerms(List<string> searchTerms, Action<string> reportProgress, int delay)
+            async Task WriteFromSearchTerms(List<string> searchTerms, Action<string> reportProgress, int delay)
             {
                 foreach (var searchTerm in searchTerms)
                 {
@@ -60,10 +60,10 @@ namespace BarbieDataScraper.Services
 
                 using (var pbar = new ProgressBar(searchTerms.Count, "Searching for dolls...", options))
                 {
-                    await writeFromSearchTerms(searchTerms, pbar.Tick, delay);
+                    await WriteFromSearchTerms(searchTerms, pbar.Tick, delay);
                 }
             } else { 
-                await writeFromSearchTerms(searchTerms, _ => { }, delay); 
+                await WriteFromSearchTerms(searchTerms, _ => { }, delay); 
             }
 
             using (var writer = new StreamWriter(writePath))

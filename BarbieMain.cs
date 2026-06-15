@@ -14,7 +14,7 @@ public class BarbieMain
             0);
         var dolls = await FileManipulation.ImportBarbiesFromCSV("Data/ParsedBarbies.csv");
         
-        EbayApi api = new EbayApi();
+        EbayAPI api = new EbayAPI();
         foreach (var item in dolls)
         {
             BarbieDoll barbieDoll = await api.GetPriceOfBarbie(item, true);

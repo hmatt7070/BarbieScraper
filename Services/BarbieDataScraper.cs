@@ -1,19 +1,17 @@
 using AngleSharp;
 using AngleSharp.Dom;
 using BarbieDataScraper.Models;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace BarbieDataScraper.Services;
 public class BarbieDataScraper
 {
-    private readonly HttpClient _client;
+    private static readonly HttpClient _client = new HttpClient();
     private readonly IBrowsingContext _context;
     private  record BarbieHtmlChunks(IElement? NameElement, IElement? TableBodyElement, IElement? DescriptionElement);
 
     public BarbieDataScraper()
     {
-        _client = new HttpClient();
         _client.BaseAddress = new Uri("https://en.barbiepedia.com/");
         _context = BrowsingContext.New(Configuration.Default);
     }
