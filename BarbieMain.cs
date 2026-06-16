@@ -9,7 +9,7 @@ public class BarbieMain
         Env.Load();
         
         await FileManipulation.FindBarbiesUsingMpn("Data/Barbie Dolls.csv",
-            "Data/ParsedBarbies.csv", true,
+            "Data/ParsedBarbies.csv", false,
             0);
         var dolls = await FileManipulation.ImportBarbiesFromCSV("Data/ParsedBarbies.csv");
         
