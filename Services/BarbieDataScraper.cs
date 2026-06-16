@@ -153,10 +153,11 @@ public class BarbieDataScraper
             
             var finalLink = potentialLinks.FirstOrDefault(link => link.TextContent.ToLower().Contains("doll"));
 
-            //one final try to find the doll by going into each potential doll and looking at the webpage to see if it contains the SKU
+            //one final try to find the doll by going into each search result and looking at the webpage to see if it contains the SKU and is a doll
             if (finalLink == null)
             {
-                foreach (var link in potentialLinks)
+                var allLinks = searchResultsDocument.QuerySelectorAll($".product-item h3 a[href*='.html']");
+                foreach (var link in allLinks)
                 {
                     try
                     {
@@ -167,8 +168,35 @@ public class BarbieDataScraper
                         IDocument document = await _context.OpenAsync(req => req.Content(productPageContent));
 
                         string? potentialSKU = document.QuerySelector(".price span").TextContent.Split(":")[1].Trim();
+                        string? itemType = "";
+                        string? websiteDollId = "";
 
-                        if (potentialSKU == barbieSKU)
+                        //finds first table tag (containing the doll information)
+                        var productTableInformation = document.QuerySelector("tbody:nth-of-type(1)");
+
+                        //prunes off extra information from the table that isn't doll information
+                        var dollInformationElements = productTableInformation.QuerySelectorAll
+                            ("tr:has(td.datasheet-features-type:first-child):not(:has(div))");
+
+                        //selects the corresponding doll information and assigns it to the doll
+                        foreach (var dollInformationElement in dollInformationElements)
+                        {
+                            string textContent = dollInformationElement.FirstElementChild.TextContent;
+                            switch (textContent)
+                            {
+                                case "Item Type": itemType = dollInformationElement.LastElementChild.FirstElementChild.TextContent;
+                                    break;
+                                case "ID BarbiePedia": websiteDollId = dollInformationElement.LastElementChild.TextContent;
+                                    break;
+                            }
+                        }
+
+                        if (potentialSKU == barbieSKU & itemType == "Doll")
+                        {
+                            finalLink = link;
+                            break;
+                        }
+                        if (websiteDollId == barbieSKU & itemType == "Doll")
                         {
                             finalLink = link;
                             break;
@@ -185,7 +213,7 @@ public class BarbieDataScraper
 
             return finalLink?.GetAttribute("href");
         }
-        catch (HttpRequestException exception)
+        catch (HttpRequestException)
         {
             return null;
         }
